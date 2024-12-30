@@ -113,11 +113,14 @@ def dias_estrella(compras:list[Compra], supermercado:str, provincia:str)->list[d
     fecha_facturacion=defaultdict(float)
     for c in compras:
         if c.supermercado==supermercado and c.provincia==provincia:
-            fecha_facturacion[c.fecha_llegada.date] += c.total_compra
+            fecha = c.fecha_llegada.date
+            fecha_facturacion[fecha] += c.total_compra
     
-    orden_fechas=sorted(fecha_facturacion.items(), key=lambda t:t[0])
+    orden_fechas=sorted(fecha_facturacion.items())
                         
     
-    for f1,f2,f3 in zip(fecha_facturacion.items(), fecha_facturacion.items()[1:], fecha_facturacion.items()[3:]):
+    for f1,f2,f3 in zip(orden_fechas, orden_fechas[1:], orden_fechas[2:]):
         if f1[1]<f2[1] and f3[1]<f2[1]:
             dias_estrella.append(f2[0])
+            
+    return dias_estrella
